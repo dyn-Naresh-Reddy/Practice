@@ -1,0 +1,400 @@
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Q11
+ttlQ11. Valid key?
+*include ibase;base=Total Respondents
+n01Yes       ;c=QQ11(1).eq.1
+n01No        ;c=QQ11(1).eq.2
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q1
+ttlDL_Q1. Do you receive an electric bill for your home from ComEd either through the U.S. mail or electronically?
+*include ibase;base=Total Respondents
+n01Yes                         ;c=QDL_Q1(1).eq.1
+n01No                          ;c=QDL_Q1(1).eq.2
+n01Don't know / Not sure       ;c=QDL_Q1(1).eq.3;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q3
+ttlDL_Q3. Which of the following best describes you?
+*include ibase;base=Total Respondents
+n01White (Caucasian)              ;c=QDL_Q3(1).eq.1
+n01Black (African American)       ;c=QDL_Q3(1).eq.2
+n01Hispanic                       ;c=QDL_Q3(1).eq.3
+n01Asian                          ;c=QDL_Q3(1).eq.4
+n01Bi-racial / mixed race         ;c=QDL_Q3(1).eq.5
+n01Other                          ;c=QDL_Q3(1).eq.6;nosort
+n01Prefer not to answer           ;c=QDL_Q3(1).eq.7;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q4
+ttlDL_Q4. Thinking about your experiences with ComEd as your electric utility, how satisfied would you say you are with ComEd?
+*include ibase;base=Total Respondents
+*include irate11;cols=QDL_Q4(1);cond=QDL_Q4(1).in.(0,1:10)
++txt0=Extremely dissatisfied;
++txt1=1;
++txt2=2;
++txt3=3;
++txt4=4;
++txt5=5;
++txt6=6;
++txt7=7;
++txt8=8;
++txt9=9;
++txta=Extremely satisfied;
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Media1
+ttlMedia 1. Do you recall previously seeing either of the messages below from ComEd on Facebook in the past 60 days?
+*include ibase;base=Total Respondents
+n01Yes                       ;c=QQPrint_dp(1).eq.1
+n01No                        ;c=QQPrint_dp(1).eq.2
+n01Unable to view/hear       ;c=QQPrint_dp(1).eq.3
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Media2
+ttlMedia 2. Do you recall previously seeing either of the messages below from ComEd on a billboard or in a train car in the past 60 days?
+*include ibase;base=Total Respondents
+n01Yes                       ;c=QQBus_dp(1).eq.1
+n01No                        ;c=QQBus_dp(1).eq.2
+n01Unable to view/hear       ;c=QQBus_dp(1).eq.3
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Media3
+ttlMedia 3. Do you recall seeing this animated digital message online (Bill Pay) in the past 60 days?
+*include ibase;base=Total Respondents
+n01Yes                       ;c=QQAnimated_digital_dp(1).eq.1
+n01No                        ;c=QQAnimated_digital_dp(1).eq.2
+n01Unable to view/hear       ;c=QQAnimated_digital_dp(1).eq.3
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Media4
+ttlMedia 4. Do you recall seeing this animated digital message online (Outage) in the past 60 days?
+*include ibase;base=Total Respondents
+n01Yes                       ;c=QQTV_dp(1).eq.1
+n01No                        ;c=QQTV_dp(1).eq.2
+n01Unable to view/hear       ;c=QQTV_dp(1).eq.3
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Media5
+ttlMedia 5. Do you recall hearing the radio message you just listened to in the past 60 days ?
+*include ibase;base=Total Respondents
+n01Yes                       ;c=QQradio_dp(1).eq.1
+n01No                        ;c=QQradio_dp(1).eq.2
+n01Unable to view/hear       ;c=QQradio_dp(1).eq.3
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q10
+ttlDL_Q10. Overall, to what extent did you find the main message(s) to be unclear or clear?
+*include ibase;base=Total Respondents
+*include irate4;cols=QDL_Q10(1);cond=QDL_Q10(1).in.(1:4)
++txt1=Not at all Clear;
++txt2=Not very Clear;
++txt3=Somewhat Clear;
++txt4=Very Clear;
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+*include Q35;qid=Q35r1   ;col(a)=1 ;stmt=The messages contain new information.
+*include Q35;qid=Q35r2   ;col(a)=2 ;stmt=This is an appropriate message from ComEd.
+*include Q35;qid=Q35r3   ;col(a)=3 ;stmt=The message is easy to understand.
+*include Q35;qid=Q35r4   ;col(a)=4 ;stmt=The message has a fresh approach.
+
+*include Q35_box;qid=Q35_T3B;cod=8:10;ABC=net;col(a)=1 ;stmt=Top 3 Box Summary
+*include Q35_box;qid=Q35_T2B;cod=9:10;ABC=net;col(a)=1 ;stmt=Top 2 Box Summary
+*include Q35_box;qid=Q35_M4B;cod=3:7 ;ABC=net;col(a)=1 ;stmt=Middle 5 Box Summary
+*include Q35_box;qid=Q35_B3B;cod=0:2 ;ABC=net;col(a)=1 ;stmt=Bottom 3 Box Summary
+*include Q35_box;qid=Q35_B2B;cod=0:1 ;ABC=net;col(a)=1 ;stmt=Bottom 2 Box Summary
+*include Q35_box;qid=Q35_MS          ;ABC=ms ;col(a)=1 ;stmt=Summary Of Means
+
+l Q35_grid
+&tstat propmean;elms=ABCD;clevel=&clvl
+&GP*include GP_Q35grid
+n01The messages contain new information.            ;id=A;col(a)=1
+n01This is an appropriate message from ComEd.       ;id=B;col(a)=2
+n01The message is easy to understand.               ;id=C;col(a)=3
+n01The message has a fresh approach.                ;id=D;col(a)=4
+side
+ttlQ35. Grid Summary - 
+ttl     Considering all of the messages you have reviewed... How much do you agree or disagree with each of the following statements?
+*include ibase;base=Total Respondents
+*include irate11;cols=QQ35(a00);cond=QQ35(a00).in.(0,1:10)
++txt0=Completely disagree;
++txt1=1;
++txt2=2;
++txt3=3;
++txt4=4;
++txt5=5;
++txt6=6;
++txt7=7;
++txt8=8;
++txt9=9;
++txta=Completely agree;
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q14
+ttlDL_Q14. Considering all of the messages you have reviewed...Please indicate which of the following are true as a result of seeing these advertisements.
+*include ibase;base=Total Respondents
+n01I learned something new                                              ;c=QDL_Q14(1).eq.1
+n01I plan to look for more information because of the messages          ;c=QDL_Q14(2).eq.1
+n01I plan to discuss or share this information with others              ;c=QDL_Q14(3).eq.1
+n01This information is relevant to me                                   ;c=QDL_Q14(4).eq.1
+n01None of these                                                        ;c=QDL_Q14(5).eq.1
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+*include Q15;qid=Q15_1   ;col(a)=1 ;stmt=ComEd is striking the correct tone with these messages
+*include Q15;qid=Q15_2   ;col(a)=2 ;stmt=The messages show that ComEd is empathetic to my needs
+*include Q15;qid=Q15_3   ;col(a)=3 ;stmt=The messages give ComEd too much credit
+*include Q15;qid=Q15_4   ;col(a)=4 ;stmt=I want ComEd to play a more prominent role in the messages
+
+*include Q15_box;qid=Q15_T2B;cod=4:5;ABC=net;col(a)=1 ;stmt=Top 2 Box Summary
+*include Q15_box;qid=Q15_B2B;cod=1:2;ABC=net;col(a)=1 ;stmt=Bottom 2 Box Summary
+*include Q15_box;qid=Q15_MS         ;ABC=ms ;col(a)=1 ;stmt=Summary Of Means
+
+l Q15_grid
+&tstat propmean;elms=ABCD;clevel=&clvl
+&GP*include GP_Q15grid
+n01ComEd is striking the correct tone with these messages           ;id=A;col(a)=1
+n01The messages show that ComEd is empathetic to my needs           ;id=B;col(a)=2
+n01The messages give ComEd too much credit                          ;id=C;col(a)=3
+n01I want ComEd to play a more prominent role in the messages       ;id=D;col(a)=4
+side
+ttlQ15. Grid Summary - 
+ttl     Again, considering all of the messages you have reviewed... How much do you agree or disagree with each of these statements?
+*include ibase;base=Total Respondents
+*include irate5;cols=QQ15(a00);cond=QQ15(a00).in.(1:5)
++txt1=Strongly Disagree;
++txt2=Somewhat Disagree;
++txt3=Neither Agree Nor Disagree;
++txt4=Somewhat Agree;
++txt5=Strongly Agree;
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Q38
+ttlQ38. Before today, were you aware of ComEd's Mobile app?
+*include ibase;base=Total Respondents
+n01Yes       ;c=QQ38(1).eq.1
+n01No        ;c=QQ38(1).eq.2
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Q39;c=QQ38(1).eq.1
+ttlQ39. Before today, which features of the ComEd mobile app were you aware of?
+*include ibase;base=Respondents Who Are Aware Of ComEd's Mobile App
+n01Easy way to pay your bill                                      ;c=QQ39(1).eq.1
+n01Easy way to report and track an outage                         ;c=QQ39(2).eq.1
+n01None of the above                                              ;c=QQ39(3).eq.1
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q16
+ttlDL_Q16. To what degree do the messages you just reviewed impact your satisfaction with ComEd?
+*include ibase;base=Total Respondents
+*include irate5;cols=QDL_Q16(1);cond=QDL_Q16(1).in.(1:5)
++txt1=Greatly lowers my satisfaction with ComEd;
++txt2=Slightly lowers my satisfaction with ComEd;
++txt3=Has no impact on my satisfaction with ComEd;
++txt4=Slightly improves my satisfaction with ComEd;
++txt5=Greatly improves my satisfaction with ComEd;
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q16_1;c=QQ38(1).eq.1
+ttlDL_Q16. To what degree do the messages you just reviewed impact your satisfaction with ComEd?
+*include ibase;base=Respondents Who Are Aware Of ComEd's Mobile App
+n01Greatly lowers my satisfaction with ComEd	   ;c=QDL_Q16(1).eq.1
+n01Slightly lowers my satisfaction with ComEd	   ;c=QDL_Q16(1).eq.2
+n01Has no impact on my satisfaction with ComEd	   ;c=QDL_Q16(1).eq.3
+n01Not Answered					   ;c=-
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q17
+ttlDL_Q17. How much do you like or dislike the idea of this messaging overall?
+*include ibase;base=Total Respondents
+*include irate5;cols=QDL_Q17(1);cond=QDL_Q17(1).in.(1:5)
++txt1=Dislike a great deal;
++txt2=Dislike somewhat;
++txt3=Neither like nor dislike;
++txt4=Like somewhat;
++txt5=Like a great deal;
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q18
+ttlDL_Q18. Are you ...?
+*include ibase;base=Total Respondents
+n01Male                       ;c=QDL_Q18(1).eq.1
+n01Female                     ;c=QDL_Q18(1).eq.2
+n01Prefer not to answer       ;c=QDL_Q18(1).eq.3;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q19
+ttlDL_Q19. In which of the following groups does your current age belong?
+*include ibase;base=Total Respondents
+n0118-34                      ;c=QDL_Q19(1).eq.1
+n0135-54                      ;c=QDL_Q19(1).eq.2
+n0155-64                      ;c=QDL_Q19(1).eq.3
+n0165 and older               ;c=QDL_Q19(1).eq.4
+n01Prefer not to answer       ;c=QDL_Q19(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q20
+ttlDL_Q20. Do you own or rent your primary residence?
+*include ibase;base=Total Respondents
+n01Own                        ;c=QDL_Q20(1).eq.1
+n01Rent                       ;c=QDL_Q20(1).eq.2
+n01Prefer not to answer       ;c=QDL_Q20(1).eq.99;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q21
+ttlDL_Q21. Including yourself, how many people live in your household?
+*include ibase;base=Total Respondents
+n011                          ;c=QDL_Q21(1).eq.1
+n012                          ;c=QDL_Q21(1).eq.2
+n013                          ;c=QDL_Q21(1).eq.3
+n014                          ;c=QDL_Q21(1).eq.4
+n015                          ;c=QDL_Q21(1).eq.5
+n016                          ;c=QDL_Q21(1).eq.6
+n017                          ;c=QDL_Q21(1).eq.7
+n018 or more                  ;c=QDL_Q21(1).eq.8
+n01Prefer not to answer       ;c=QDL_Q21(1).eq.99;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q22;c=QDL_Q21(1).eq.1
+ttlDL_Q22. Was your total annual household income in 2023 less than, equal to, or more than $57,500?
+*include ibase;base=Number of people live in your household is 1
+n01Less than                  ;c=QDL_Q22(1).eq.1
+n01Equal to                   ;c=QDL_Q22(1).eq.2
+n01More than                  ;c=QDL_Q22(1).eq.3
+n01Don't know                 ;c=QDL_Q22(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q22(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q23;c=QDL_Q21(1).eq.2
+ttlDL_Q23. Was your total annual household income in 2023 less than, equal to, or more than $65,500?
+*include ibase;base=Number of people live in your household are 2
+n01Less than                  ;c=QDL_Q23(1).eq.1
+n01Equal to                   ;c=QDL_Q23(1).eq.2
+n01More than                  ;c=QDL_Q23(1).eq.3
+n01Don't know                 ;c=QDL_Q23(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q23(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q24;c=QDL_Q21(1).eq.3
+ttlDL_Q24. Was your total annual household income in 2023 less than, equal to, or more than $74,000?
+*include ibase;base=Number of people live in your household are 3
+n01Less than                  ;c=QDL_Q24(1).eq.1
+n01Equal to                   ;c=QDL_Q24(1).eq.2
+n01More than                  ;c=QDL_Q24(1).eq.3
+n01Don't know                 ;c=QDL_Q24(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q24(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q25;c=QDL_Q21(1).eq.4
+ttlDL_Q25. Was your total annual household income in 2023 less than, equal to, or more than $82,000?
+*include ibase;base=Number of people live in your household are 4
+n01Less than                  ;c=QDL_Q25(1).eq.1
+n01Equal to                   ;c=QDL_Q25(1).eq.2
+n01More than                  ;c=QDL_Q25(1).eq.3
+n01Don't know                 ;c=QDL_Q25(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q25(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q26;c=QDL_Q21(1).eq.5
+ttlDL_Q26. Was your total annual household income in 2023 less than, equal to, or more than $88,500?
+*include ibase;base=Number of people live in your household are 5
+n01Less than                  ;c=QDL_Q26(1).eq.1
+n01Equal to                   ;c=QDL_Q26(1).eq.2
+n01More than                  ;c=QDL_Q26(1).eq.3
+n01Don't know                 ;c=QDL_Q26(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q26(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q27;c=QDL_Q21(1).eq.6
+ttlDL_Q27. Was your total annual household income in 2023 less than, equal to, or more than $95,500?
+*include ibase;base=Number of people live in your household are 6
+n01Less than                  ;c=QDL_Q27(1).eq.1
+n01Equal to                   ;c=QDL_Q27(1).eq.2
+n01More than                  ;c=QDL_Q27(1).eq.3
+n01Don't know                 ;c=QDL_Q27(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q27(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q28;c=QDL_Q21(1).eq.7
+ttlDL_Q28. Was your total annual household income in 2023 less than, equal to, or more than $102,000?
+*include ibase;base=Number of people live in your household are 7
+n01Less than                  ;c=QDL_Q28(1).eq.1
+n01Equal to                   ;c=QDL_Q28(1).eq.2
+n01More than                  ;c=QDL_Q28(1).eq.3
+n01Don't know                 ;c=QDL_Q28(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q28(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l DL_Q29;c=QDL_Q21(1).eq.8
+ttlDL_Q29. Was your total annual household income in 2023 less than, equal to, or more than $108,500?
+*include ibase;base=Number of people live in your household are 8 or more 
+n01Less than                  ;c=QDL_Q29(1).eq.1
+n01Equal to                   ;c=QDL_Q29(1).eq.2
+n01More than                  ;c=QDL_Q29(1).eq.3
+n01Don't know                 ;c=QDL_Q29(1).eq.4;nosort
+n01Prefer not to answer       ;c=QDL_Q29(1).eq.5;nosort
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l IncomeBand;c=QDL_Q21(1).in.(1:8)
+ttlIncomeBand. Income band
+*include ibase;base=Respondents Answered
+n01Low              ;c=QIncomeBand(1).eq.1
+n01Not low          ;c=QIncomeBand(1).eq.2
+n01DK/Refused       ;c=QIncomeBand(1).eq.99
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l Area_Type
+ttlArea_Type. Area_Type
+*include ibase;base=Total Respondents
+n01Chicago        ;c=QArea_Type(1).eq.1
+n01Suburban       ;c=QArea_Type(1).eq.2
+n01Exurban        ;c=QArea_Type(1).eq.3
+*include sigma
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
+l ad_Recall
+ttlAD RECALL
+ttlMedia 1. Do you recall previously seeing either of the messages below from ComEd on Facebook in the past 60 days?
+ttlMedia 2. Do you recall previously seeing either of the messages below from ComEd on a billboard or in a train car in the past 60 days?
+ttlMedia 3. Do you recall seeing this animated digital message online (Bill Pay) in the past 60 days?
+ttlMedia 4. Do you recall seeing this animated digital message online (Outage) in the past 60 days?
+ttlMedia 5. Do you recall hearing the radio message you just listened to in the past 60 days?
+*include ibase;base=Total Respondents
+
+net1Ad recall (Net);unl1
+n01Yes On Facebook       	                      ;c=QQPrint_dp(1).eq.1         
+n01Yes on a billboard or in a train car               ;c=QQBus_dp(1).eq.1         
+n01Yes on animated digital message online (Bill Pay)  ;c=QQAnimated_digital_dp(1).eq.1 
+n01Yes on animated digital message online (Outage)    ;c=QQTV_dp(1).eq.1               
+n01Yes on radio message          	              ;c=QQradio_dp(1).eq.1            
+netend1
+
+n01No ad recall                      ;c=(.not.(QQPrint_dp(1).eq.1.or.QQBus_dp(1).eq.1.or.QQAnimated_digital_dp(1).eq.1.or.QQTV_dp(1).eq.1.or.QQradio_dp(1).eq.1))
+
+
+
+C-------------------------------------------------------------------------------------------------------------------------------------------------------
