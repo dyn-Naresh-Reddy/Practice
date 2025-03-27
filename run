@@ -1,0 +1,62 @@
+struct;read=0;ser=c(1,7);reclen=32767
+
+*include ../variable
+
+ed
+
+*include ../clear
+*include ../setvar
+
+if (GFLTR);else; reject;return
+
+CC clear t2
+CC t2=c(1,7)
+CC c(1,7)=t2
+CC call fetchx($OE_DATA.DAT$,c1,c25008,3)
+
+*include edit_edt
+
+end
+
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------
+/* regular tabs
+CWDa;op=125;decp=1;dec=0;flush;dsp;notype;spechar="-*";side=30;printz;pc;pagwid=240;paglen=62;medint=1;dp;nopage;nodate;netsort;minbase=0;smallbase=0;overlap;nsw;wm=WM
+
+/* Excel tabs
+CXL1a;op=125;nonz;decp=5;dec=0;flush;nodsp;notype;spechar="-*";side=50;printz;pc;pagwid=1500;paglen=64;medint=1;dp;netsort;nopage;minbase=0;smallbase=0;overlap;nodate;nsw;wm=WM
+
+/* Excel tabs
+CXL2a;op=2;nonz;decp=5;dec=0;flush;nodsp;notype;spechar="-*";side=50;printz;pc;pagwid=1500;paglen=64;medint=1;dp;netsort;nopage;minbase=0;smallbase=0;overlap;nodate;nsw;wm=WM
+
+CWDttrTable <<tab>> Page <<pag>>
+CXL1tbl 1
+CXL2tbl 1
+
+/*Final weights
+wm1 axdum;pre=cx(10011,10020);factor;1
+
+ttlORD-1164786-V7P2
+ttlComEd - Mobile App
+
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------
+*def UWTD=CUWTD
+*def WTD=CWTD
+
+*def nz=nonz
+*def sort=nosort
+*def mdsort=nosort
+*def tstat=CTSTAT
+*def GP=CGXP
+*def clvl=C1LVL
+
+*def OE_QUE=
+*def CE_QUE=CC
+
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------
+*include CTABS;ban=IBAN
+*include axes
+*include banners
+
+l axdum
+n01dummy
+
